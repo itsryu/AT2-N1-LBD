@@ -44,7 +44,7 @@ create table gols(
 create table cartoes(
     id_cartao int not null auto_increment,
     id_partida int,
-    id_clube int,
+    clube varchar(50),
     rodada int,
     cartao_tipo varchar(10),
     atleta varchar(100),
@@ -52,8 +52,7 @@ create table cartoes(
     posicao varchar(20),
     minuto varchar(4),
     primary key (id_cartao),
-    foreign key (id_partida) references partidas(id_partida),
-    foreign key(id_clube) references clubes(id_clube)
+    foreign key (id_partida) references partidas(id_partida)
 );
 
 create table estatisticas(
@@ -62,9 +61,9 @@ create table estatisticas(
     id_clube int,
     chutes int,
     chutes_a_gol int,
-    posse_de_bola float(2,2),
+    posse_de_bola float,
     passes int,
-    precisao_passes float(2,2),
+    precisao_passes float,
     faltas int,
     cartao_amarelo int,
     cartao_vermelho int,
