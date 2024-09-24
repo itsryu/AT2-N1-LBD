@@ -46,7 +46,7 @@ create table cartoes(
     id_partida int,
     id_clube int,
     rodada int,
-    cartão_tipo varchar(10),
+    cartao_tipo varchar(10),
     atleta varchar(100),
     num_camisa int,
     posicao varchar(20),
