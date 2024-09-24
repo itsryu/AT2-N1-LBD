@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS gols (
     id_partida INT,
     id_clube INT,
     rodada INT,
-    atleta INT,
+    atleta VARCHAR(100),
     minuto VARCHAR(4),
     PRIMARY KEY (id_gol),
     FOREIGN KEY (id_partida) REFERENCES partidas (id_partida),
