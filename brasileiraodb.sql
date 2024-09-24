@@ -1,6 +1,6 @@
-create database brasileirão;
+create database brasileirao;
 
-use brasileirão;
+use brasileirao;
 
 create table partidas(
     id_partida int not null auto_increment,
