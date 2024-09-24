@@ -2,8 +2,6 @@ create database brasileirão;
 
 use brasileirão;
 
---tabela para dados das partidas
-
 create table partidas(
     id_partida int not null auto_increment,
     rodada int,
@@ -24,16 +22,12 @@ create table partidas(
     primary key (id_partida)
 );
 
---tabela para dados dos clubes
-
 create table clubes(
     id_clube int not null auto_increment,
     nome varchar(50),
     estado varchar(20),
     primary key (id_clube)
 );
-
---tabela para dados de gols
 
 create table gols(
     id_gol int not null auto_increment,
@@ -46,8 +40,6 @@ create table gols(
     foreign key (id_partida) references  partidas(id_partida),
     foreign key (id_clube) references clubes(id_clube)
 );
-
---tabela para dados de cartões
 
 create table cartoes(
     id_cartao int not null auto_increment,
@@ -64,17 +56,15 @@ create table cartoes(
     foreign key(id_clube) references clubes(id_clube)
 );
 
---tabela para estatisticas
-
 create table estatisticas(
     id_estatistica int not null auto_increment,
     id_partida int,
     id_clube int,
     chutes int,
     chutes_a_gol int,
-    posse_de_bola float,
+    posse_de_bola float(2,2),
     passes int,
-    precisao_passes float,
+    precisao_passes float(2,2),
     faltas int,
     cartao_amarelo int,
     cartao_vermelho int,
