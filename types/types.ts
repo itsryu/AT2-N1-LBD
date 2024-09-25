@@ -4,7 +4,7 @@ type cartoesData = {
     clube: string;
     cartao: string;
     atleta: string;
-    num_camisa: number;
+    num_camisa: string;
     posicao: string;
     minuto: string;
 }

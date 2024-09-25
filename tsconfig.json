@@ -11,6 +11,7 @@
         "sourceMap": true,
         "outDir": "./dist",
         "strict": true,
+        "forceConsistentCasingInFileNames": true,
         "moduleResolution": "node",
         "resolveJsonModule": true,
         "noImplicitAny": false,

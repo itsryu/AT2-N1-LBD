@@ -1,6 +1,3 @@
-# Created by https://www.toptal.com/developers/gitignore/api/node,yarn,visualstudio,visualstudiocode
-# Edit at https://www.toptal.com/developers/gitignore?templates=node,yarn,visualstudio,visualstudiocode
-
 ### Node ###
 # Logs
 logs
@@ -569,5 +566,3 @@ FodyWeavers.xsd
 
 ### VisualStudio Patch ###
 # Additional files built by Visual Studio
-
-# End of https://www.toptal.com/developers/gitignore/api/node,yarn,visualstudio,visualstudiocode

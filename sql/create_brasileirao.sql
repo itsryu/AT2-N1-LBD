@@ -5,71 +5,79 @@ DEFAULT COLLATE = 'utf8_general_ci';
 USE brasileirao;
 
 CREATE TABLE IF NOT EXISTS partidas (
-    id_partida INT,
-    rodada INT,
-    horario TIME,
-    data_partida DATE,
-    mandante VARCHAR(50),
-    visitante VARCHAR(50),
+    id_partida INT AUTO_INCREMENT,
+    rodada INT NOT NULL,
+    horario TIME NOT NULL,
+    data_partida DATE NOT NULL,
+    mandante VARCHAR(50) NOT NULL,
+    visitante VARCHAR(50) NOT NULL,
     formacao_mandante VARCHAR(10),
     formacao_visitante VARCHAR(10),
     tecnico_mandante VARCHAR(100),
     tecnico_visitante VARCHAR(100),
     vencedor VARCHAR(50),
-    arena VARCHAR(50),
+    arena VARCHAR(100),
     mandante_placar INT,
     visitante_placar INT,
     estado_mandante VARCHAR(2),
     estado_visitante VARCHAR(2),
-    PRIMARY KEY (id_partida)
+    PRIMARY KEY (id_partida),
+    INDEX idx_rodada (rodada),
+    INDEX idx_data_partida (data_partida)
 ) DEFAULT CHARSET = 'utf8' DEFAULT COLLATE = 'utf8_general_ci';
 
 CREATE TABLE IF NOT EXISTS gols (
-    id_partida INT,
-    id_clube INT,
-    rodada INT,
-    atleta VARCHAR(100),
-    minuto VARCHAR(4),
+    id_gol INT AUTO_INCREMENT DEFAULT NULL,
+    id_partida INT NOT NULL,
+    rodada INT NOT NULL,
+    clube VARCHAR(100) NOT NULL,
+    atleta VARCHAR(100) NOT NULL,
+    minuto VARCHAR(4) NOT NULL,
+    tipo_de_gol VARCHAR(30),
     PRIMARY KEY (id_gol),
-    FOREIGN KEY (id_partida) REFERENCES partidas (id_partida)
-) DEFAULT CHARSET = 'utf8' DEFAULT COLLATE = 'utf8_general_ci';
-
-CREATE TABLE IF NOT EXISTS clubes (
-    id_clube INT NOT NULL AUTO_INCREMENT,
-    nome VARCHAR(50),
-    estado VARCHAR(20),
-    PRIMARY KEY (id_clube)
+    FOREIGN KEY (id_partida) REFERENCES partidas (id_partida) ON DELETE CASCADE,
+    INDEX idx_id_partida (id_partida)
 ) DEFAULT CHARSET = 'utf8' DEFAULT COLLATE = 'utf8_general_ci';
 
 CREATE TABLE IF NOT EXISTS cartoes (
-    id_cartao INT NOT NULL AUTO_INCREMENT,
-    id_partida INT,
-    clube VARCHAR(50),
-    rodada INT,
-    cartao_tipo VARCHAR(10),
-    atleta VARCHAR(100),
+    id_cartao INT AUTO_INCREMENT DEFAULT NULL,
+    id_partida INT NOT NULL,
+    rodada INT NOT NULL,
+    clube VARCHAR(100) NOT NULL,
+    cartao VARCHAR(10) NOT NULL,
+    atleta VARCHAR(100) NOT NULL,
     num_camisa INT,
-    posicao VARCHAR(20),
-    minuto VARCHAR(4),
+    posicao VARCHAR(20) NOT NULL,
+    minuto VARCHAR(5) NOT NULL,
     PRIMARY KEY (id_cartao),
-    FOREIGN KEY (id_partida) REFERENCES partidas (id_partida)
+    FOREIGN KEY (id_partida) REFERENCES partidas (id_partida) ON DELETE CASCADE,
+    INDEX idx_id_partida (id_partida)
 ) DEFAULT CHARSET = 'utf8' DEFAULT COLLATE = 'utf8_general_ci';
 
 CREATE TABLE IF NOT EXISTS estatisticas (
-    id_estatistica INT NOT NULL AUTO_INCREMENT,
-    id_partida INT,
-    id_clube INT,
-    chutes INT,
-    chutes_a_gol INT,
-    posse_de_bola FLOAT,
-    passes INT,
-    precisao_passes FLOAT,
-    faltas INT,
-    cartao_amarelo INT,
-    cartao_vermelho INT,
-    impedimentos INT,
-    escanteios INT,
+    id_estatistica INT AUTO_INCREMENT DEFAULT NULL,
+    id_partida INT NOT NULL,
+    rodada INT NOT NULL,
+    clube VARCHAR(100) NOT NULL,
+    chutes INT NOT NULL,
+    chutes_a_gol INT NOT NULL,
+    posse_de_bola VARCHAR(4) NOT NULL,
+    passes INT NOT NULL,
+    precisao_passes VARCHAR(4) NOT NULL,
+    faltas INT NOT NULL,
+    cartao_amarelo INT NOT NULL,
+    cartao_vermelho INT NOT NULL,
+    impedimentos INT NOT NULL,
+    escanteios INT NOT NULL,
     PRIMARY KEY (id_estatistica),
-    FOREIGN KEY (id_partida) REFERENCES partidas (id_partida),
-    FOREIGN KEY (id_clube) REFERENCES clubes (id_clube)
+    FOREIGN KEY (id_partida) REFERENCES partidas (id_partida) ON DELETE CASCADE,
+    INDEX idx_id_partida (id_partida)
+) DEFAULT CHARSET = 'utf8' DEFAULT COLLATE = 'utf8_general_ci';
+
+CREATE TABLE IF NOT EXISTS clubes (
+    id_clube INT AUTO_INCREMENT DEFAULT NULL,
+    nome VARCHAR(100) NOT NULL,
+    estado VARCHAR(2) NOT NULL,
+    PRIMARY KEY (id_clube),
+    UNIQUE INDEX idx_nome (nome)
 ) DEFAULT CHARSET = 'utf8' DEFAULT COLLATE = 'utf8_general_ci';
