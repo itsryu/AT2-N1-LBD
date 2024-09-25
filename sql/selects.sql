@@ -5,4 +5,4 @@ SELECT * FROM cartoes WHERE clube ='Flamengo';
 
 SELECT * FROM gols WHERE tipo_de_gol ='Gol Contra';
 
-SELECT tipo_de_gol FROM gols WHERE;
+SELECT clube, tipo_de_gol FROM gols where tipo_de_gol = 'gol contra';
