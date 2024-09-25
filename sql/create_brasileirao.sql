@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS partidas (
 ) DEFAULT CHARSET = 'utf8' DEFAULT COLLATE = 'utf8_general_ci';
 
 CREATE TABLE IF NOT EXISTS gols (
-    id_gol INT AUTO_INCREMENT DEFAULT NULL,
+    id_gol INT AUTO_INCREMENT,
     id_partida INT NOT NULL,
     rodada INT NOT NULL,
     clube VARCHAR(100) NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS gols (
 ) DEFAULT CHARSET = 'utf8' DEFAULT COLLATE = 'utf8_general_ci';
 
 CREATE TABLE IF NOT EXISTS cartoes (
-    id_cartao INT AUTO_INCREMENT DEFAULT NULL,
+    id_cartao INT AUTO_INCREMENT,
     id_partida INT NOT NULL,
     rodada INT NOT NULL,
     clube VARCHAR(100) NOT NULL,
@@ -55,15 +55,15 @@ CREATE TABLE IF NOT EXISTS cartoes (
 ) DEFAULT CHARSET = 'utf8' DEFAULT COLLATE = 'utf8_general_ci';
 
 CREATE TABLE IF NOT EXISTS estatisticas (
-    id_estatistica INT AUTO_INCREMENT DEFAULT NULL,
+    id_estatistica INT AUTO_INCREMENT,
     id_partida INT NOT NULL,
     rodada INT NOT NULL,
     clube VARCHAR(100) NOT NULL,
     chutes INT NOT NULL,
     chutes_a_gol INT NOT NULL,
-    posse_de_bola VARCHAR(4) NOT NULL,
+    posse_de_bola VARCHAR(4),
     passes INT NOT NULL,
-    precisao_passes VARCHAR(4) NOT NULL,
+    precisao_passes VARCHAR(4),
     faltas INT NOT NULL,
     cartao_amarelo INT NOT NULL,
     cartao_vermelho INT NOT NULL,
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS estatisticas (
 ) DEFAULT CHARSET = 'utf8' DEFAULT COLLATE = 'utf8_general_ci';
 
 CREATE TABLE IF NOT EXISTS clubes (
-    id_clube INT AUTO_INCREMENT DEFAULT NULL,
+    id_clube INT AUTO_INCREMENT,
     nome VARCHAR(100) NOT NULL,
     estado VARCHAR(2) NOT NULL,
     PRIMARY KEY (id_clube),
