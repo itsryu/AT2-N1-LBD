@@ -1,0 +1,22 @@
+{
+  "name": "AT2-N1-LBD",
+  "version": "1.0.0",
+  "main": "dist/main.js",
+  "repository": "https://github.com/itsryu/AT2-N1-MBD.git",
+  "author": "itsryu",
+  "license": "MIT",
+  "engines": {
+    "node": "^18 || >=19.0.0",
+    "npm": "^9 || >=10.0.0"
+  },
+  "scripts": {
+    "build": "tsc --project tsconfig.json --pretty --noEmitOnError",
+    "clean-win": "rmdir /s /q dist",
+    "clean-lin": "rm -rf dist",
+    "start": "node dist/main.js"
+  },
+  "devDependencies": {
+    "@types/node": "^22.6.1",
+    "typescript": "^5.6.2"
+  }
+}

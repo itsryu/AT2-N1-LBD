@@ -5,7 +5,7 @@ DEFAULT COLLATE = 'utf8_general_ci';
 USE brasileirao;
 
 CREATE TABLE IF NOT EXISTS partidas (
-    id_partida INT NOT NULL AUTO_INCREMENT,
+    id_partida INT,
     rodada INT,
     horario TIME,
     data_partida DATE,
@@ -24,23 +24,21 @@ CREATE TABLE IF NOT EXISTS partidas (
     PRIMARY KEY (id_partida)
 ) DEFAULT CHARSET = 'utf8' DEFAULT COLLATE = 'utf8_general_ci';
 
-CREATE TABLE IF NOT EXISTS clubes (
-    id_clube INT NOT NULL AUTO_INCREMENT,
-    nome VARCHAR(50),
-    estado VARCHAR(20),
-    PRIMARY KEY (id_clube)
-) DEFAULT CHARSET = 'utf8' DEFAULT COLLATE = 'utf8_general_ci';
-
 CREATE TABLE IF NOT EXISTS gols (
-    id_gol INT NOT NULL AUTO_INCREMENT,
     id_partida INT,
     id_clube INT,
     rodada INT,
     atleta VARCHAR(100),
     minuto VARCHAR(4),
     PRIMARY KEY (id_gol),
-    FOREIGN KEY (id_partida) REFERENCES partidas (id_partida),
-    FOREIGN KEY (id_clube) REFERENCES clubes (id_clube)
+    FOREIGN KEY (id_partida) REFERENCES partidas (id_partida)
+) DEFAULT CHARSET = 'utf8' DEFAULT COLLATE = 'utf8_general_ci';
+
+CREATE TABLE IF NOT EXISTS clubes (
+    id_clube INT NOT NULL AUTO_INCREMENT,
+    nome VARCHAR(50),
+    estado VARCHAR(20),
+    PRIMARY KEY (id_clube)
 ) DEFAULT CHARSET = 'utf8' DEFAULT COLLATE = 'utf8_general_ci';
 
 CREATE TABLE IF NOT EXISTS cartoes (
