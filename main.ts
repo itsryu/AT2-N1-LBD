@@ -111,6 +111,27 @@ export class SQLConstructor {
         const sqlPath = resolve('./sql/insert_estatisticas.sql');
         writeFileSync(sqlPath, sql);
     }
+
+    public static createClube() {
+        const csvPath = resolve('./data/campeonato-brasileiro-full.csv');
+        const content = readFileSync(csvPath, { encoding: 'utf-8' });
+        const rows = SQLConstructor.parseCSV<partidaData>(content);
+        const requiredFields = new Set(['ID', 'rodata', 'data', 'hora', 'mandante', 'visitante', 'formacao_mandante', 'formacao_visitante', 'tecnico_mandante', 'tecnico_visitante', 'vencedor', 'arena', 'mandante_Placar', 'visitante_Placar', 'mandante_Estado', 'visitante_Estado']);
+
+        let sql = `SET GLOBAL net_buffer_length = 1000000;\nSET GLOBAL max_allowed_packet = 1000000000;\n\nUSE brasileirao;\n\n`;
+
+        sql += `INSERT INTO clubes (id_clube, nome, estado)\nVALUES\n` +
+            rows.reduce<string[]>((acc, row) => {
+                if ([...requiredFields].every(field => (row)[field] !== undefined)) {
+                    if (!acc.some(clube => clube.includes(row.visitante))) acc.push(`\t(NULL, "${row.visitante}", "${row.visitante_Estado}")`);
+                    if (!acc.some(clube => clube.includes(row.mandante))) acc.push(`\t(NULL, "${row.mandante}", "${row.mandante_Estado}")`);
+                }
+                return acc;
+            }, []).join(',\n') + ';';
+
+        const sqlPath = resolve('./sql/insert_clubes.sql');
+        writeFileSync(sqlPath, sql);
+    }
 }
 
 (() => {
@@ -118,4 +139,5 @@ export class SQLConstructor {
     SQLConstructor.createGols();
     SQLConstructor.createCartoes();
     SQLConstructor.createEstatisticas();
+    SQLConstructor.createClube();
 })();
