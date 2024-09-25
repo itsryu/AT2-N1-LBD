@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS partidas (
 CREATE TABLE IF NOT EXISTS gols (
     id_gol INT AUTO_INCREMENT,
     id_partida INT NOT NULL,
+    id_clube INT NOT NULL,
     rodada INT NOT NULL,
     clube VARCHAR(100) NOT NULL,
     atleta VARCHAR(100) NOT NULL,
@@ -42,6 +43,7 @@ CREATE TABLE IF NOT EXISTS gols (
 CREATE TABLE IF NOT EXISTS cartoes (
     id_cartao INT AUTO_INCREMENT,
     id_partida INT NOT NULL,
+    id_clube INT NOT NULL,
     rodada INT NOT NULL,
     clube VARCHAR(100) NOT NULL,
     cartao VARCHAR(10) NOT NULL,
@@ -57,6 +59,7 @@ CREATE TABLE IF NOT EXISTS cartoes (
 CREATE TABLE IF NOT EXISTS estatisticas (
     id_estatistica INT AUTO_INCREMENT,
     id_partida INT NOT NULL,
+    id_clube INT NOT NULL,
     rodada INT NOT NULL,
     clube VARCHAR(100) NOT NULL,
     chutes INT NOT NULL,

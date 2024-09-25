@@ -76,13 +76,14 @@ export class SQLConstructor {
 
         let sql = `SET GLOBAL net_buffer_length = 1000000;\nSET GLOBAL max_allowed_packet = 1000000000;\n\nUSE brasileirao;\n\n`;
 
-        sql += `INSERT INTO cartoes (id_cartao, id_partida, rodada, clube, cartao, atleta, num_camisa, posicao, minuto)\nVALUES\n` +
+        sql += `INSERT INTO cartoes (id_cartao, id_partida, id_clube, rodada, clube, cartao, atleta, num_camisa, posicao, minuto)\nVALUES\n` +
             rows.reduce<string[]>((acc, row) => {
                 if ([...requiredFields].every(field => (row)[field] !== undefined)) {
                     row.num_camisa = !row.num_camisa ? 'NULL' : `${row.num_camisa}`;
                     row.posicao = !row.posicao ? 'NULL' : `"${row.posicao}"`;
+                    const id = SQLConstructor.clubeMap.get(row.clube);
 
-                    acc.push(`\t(NULL, ${row.partida_id}, ${row.rodata}, "${row.clube}", "${row.cartao}", "${row.atleta}", ${row.num_camisa}, ${row.posicao}, "${row.minuto}")`);
+                    acc.push(`\t(NULL, ${row.partida_id}, ${id}, ${row.rodata}, "${row.clube}", "${row.cartao}", "${row.atleta}", ${row.num_camisa}, ${row.posicao}, "${row.minuto}")`);
                 }
                 return acc;
             }, []).join(',\n') + ';';
@@ -107,7 +108,6 @@ export class SQLConstructor {
                     row.posse_de_bola = row.posse_de_bola == '\"None\"' ? 'NULL' : `${row.posse_de_bola}`;
                     row.precisao_passes = row.precisao_passes == '\"None\"' ? 'NULL' : `${row.precisao_passes}`;
                     const id = SQLConstructor.clubeMap.get(row.clube);
-                    console.log(id);
 
                     acc.push(`\t(NULL, ${row.partida_id}, ${id}, ${row.rodata}, "${row.clube}", ${row.chutes}, ${row.chutes_no_alvo}, ${row.posse_de_bola}, ${row.passes}, ${row.precisao_passes}, ${row.faltas}, ${row.cartao_amarelo}, ${row.cartao_vermelho}, ${row.impedimentos}, ${row.escanteios})`);
                 }
