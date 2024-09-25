@@ -3,6 +3,9 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { estatisticasData, golsData, partidaData, type cartoesData } from './types/types';
 
 export class SQLConstructor {
+    public static clubeMap = new Map<string, number>();
+    public static clubeIdCounter = 1;
+
     private static parseCSV<T>(content: string): T[] {
         const [headerLine, ...lines] = content.split('\n');
         const headers = headerLine.split(',').map(field => field.trim().replace(/^"|"$/g, ''));
@@ -50,12 +53,13 @@ export class SQLConstructor {
 
         let sql = `SET GLOBAL net_buffer_length = 1000000;\nSET GLOBAL max_allowed_packet = 1000000000;\n\nUSE brasileirao;\n\n`;
 
-        sql += `INSERT INTO gols (id_gol, id_partida, rodada, clube, atleta, minuto, tipo_de_gol)\nVALUES\n` +
+        sql += `INSERT INTO gols (id_gol, id_partida, id_clube, rodada, clube, atleta, minuto, tipo_de_gol)\nVALUES\n` +
             rows.reduce<string[]>((acc, row) => {
                 if ([...requiredFields].every(field => (row)[field] !== undefined)) {
                     row.tipo_de_gol = !row.tipo_de_gol ? 'NULL' : `"${row.tipo_de_gol}"`;
+                    const id = SQLConstructor.clubeMap.get(row.clube);
 
-                    acc.push(`\t(NULL, ${row.partida_id}, ${row.rodata}, "${row.clube}", "${row.atleta}", "${row.minuto}", ${row.tipo_de_gol})`);
+                    acc.push(`\t(NULL, ${row.partida_id}, ${id}, ${row.rodata}, "${row.clube}", "${row.atleta}", "${row.minuto}", ${row.tipo_de_gol})`);
                 }
                 return acc;
             }, []).join(',\n') + ';';
@@ -95,15 +99,17 @@ export class SQLConstructor {
 
         let sql = `SET GLOBAL net_buffer_length = 1000000;\nSET GLOBAL max_allowed_packet = 1000000000;\n\nUSE brasileirao;\n\n`;
 
-        sql += `INSERT INTO estatisticas (id_estatistica, id_partida, rodada, clube, chutes, chutes_a_gol, posse_de_bola, passes, precisao_passes, faltas, cartao_amarelo, cartao_vermelho, impedimentos, escanteios)\nVALUES\n` +
+        sql += `INSERT INTO estatisticas (id_estatistica, id_partida, id_clube, rodada, clube, chutes, chutes_a_gol, posse_de_bola, passes, precisao_passes, faltas, cartao_amarelo, cartao_vermelho, impedimentos, escanteios)\nVALUES\n` +
             rows.reduce<string[]>((acc, row) => {
                 if ([...requiredFields].every(field => (row)[field] !== undefined)) {
                     row.posse_de_bola = !row.posse_de_bola ? 'NULL' : `"${row.posse_de_bola}"`;
                     row.precisao_passes = !row.precisao_passes ? 'NULL' : `"${row.precisao_passes}"`;
                     row.posse_de_bola = row.posse_de_bola == '\"None\"' ? 'NULL' : `${row.posse_de_bola}`;
                     row.precisao_passes = row.precisao_passes == '\"None\"' ? 'NULL' : `${row.precisao_passes}`;
+                    const id = SQLConstructor.clubeMap.get(row.clube);
+                    console.log(id);
 
-                    acc.push(`\t(NULL, ${row.partida_id}, ${row.rodata}, "${row.clube}", ${row.chutes}, ${row.chutes_no_alvo}, ${row.posse_de_bola}, ${row.passes}, ${row.precisao_passes}, ${row.faltas}, ${row.cartao_amarelo}, ${row.cartao_vermelho}, ${row.impedimentos}, ${row.escanteios})`);
+                    acc.push(`\t(NULL, ${row.partida_id}, ${id}, ${row.rodata}, "${row.clube}", ${row.chutes}, ${row.chutes_no_alvo}, ${row.posse_de_bola}, ${row.passes}, ${row.precisao_passes}, ${row.faltas}, ${row.cartao_amarelo}, ${row.cartao_vermelho}, ${row.impedimentos}, ${row.escanteios})`);
                 }
                 return acc;
             }, []).join(',\n') + ';';
@@ -123,8 +129,11 @@ export class SQLConstructor {
         sql += `INSERT INTO clubes (id_clube, nome, estado)\nVALUES\n` +
             rows.reduce<string[]>((acc, row) => {
                 if ([...requiredFields].every(field => (row)[field] !== undefined)) {
-                    if (!acc.some(clube => clube.includes(row.visitante))) acc.push(`\t(NULL, "${row.visitante}", "${row.visitante_Estado}")`);
-                    if (!acc.some(clube => clube.includes(row.mandante))) acc.push(`\t(NULL, "${row.mandante}", "${row.mandante_Estado}")`);
+                    if (!acc.some(clube => clube.includes(row.visitante))) {
+                        const id = SQLConstructor.clubeIdCounter++;
+                        SQLConstructor.clubeMap.set(row.visitante, id);
+                        acc.push(`\t(${id}, "${row.visitante}", "${row.visitante_Estado}")`);
+                    }
                 }
                 return acc;
             }, []).join(',\n') + ';';
@@ -136,8 +145,8 @@ export class SQLConstructor {
 
 (() => {
     SQLConstructor.createPartida();
+    SQLConstructor.createClube();
     SQLConstructor.createGols();
     SQLConstructor.createCartoes();
     SQLConstructor.createEstatisticas();
-    SQLConstructor.createClube();
 })();
