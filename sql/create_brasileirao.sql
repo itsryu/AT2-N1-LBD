@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS gols (
     rodada INT NOT NULL,
     clube VARCHAR(100) NOT NULL,
     atleta VARCHAR(100) NOT NULL,
-    minuto VARCHAR(4) NOT NULL,
+    minuto VARCHAR(5) NOT NULL,
     tipo_de_gol VARCHAR(30),
     PRIMARY KEY (id_gol),
     FOREIGN KEY (id_partida) REFERENCES partidas (id_partida) ON DELETE CASCADE,
