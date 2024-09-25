@@ -28,8 +28,7 @@ ORDER BY media_cartao_amarelo DESC;
 -- Jogos com mais gols por partida;
 SELECT p.id_partida, p.mandante, p.visitante, (p.mandante_placar + p.visitante_placar) AS total_gols
 FROM partidas p
-ORDER BY total_gols DESC
-LIMIT 10;
+ORDER BY total_gols DESC;
 
 -- Total de faltas por clube
 SELECT c.nome, SUM(est.faltas) AS total_faltas
